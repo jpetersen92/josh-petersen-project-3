@@ -51,11 +51,15 @@ function App() {
       setCardCount(res.data.remaining);
       setPlayerHand([res.data.cards[0], res.data.cards[2]])
       setDealerHand([res.data.cards[1], res.data.cards[3]])
-
-      // setPlayerScore(Number(res.data.cards[0].value) + Number(res.data.cards[1].value))
     })
   }
+
+  // Get and display scores on screen
+  useEffect( () => {
+    getScore(playerHand, setPlayerScore, dealerHand, setDealerScore)
+  }, [playerHand, dealerHand])
   
+  // Hit button adds one card to the screen and updates the score
   const hit = () => {
     axios({
       method: 'GET',
@@ -70,84 +74,65 @@ function App() {
     })
   }
 
-  const getScore = (player, dealer) => {
-    scorePlayer(player);
-    scoreDealer(dealer);
+  const getScore = (player, setPlayer, dealer, setDealer) => {
+    displayScore(player, setPlayer);
+    displayScore(dealer, setDealer)
   }
 
-  const scorePlayer = (cards) => {
-    let cardOne = cards[0].value
-    let cardTwo = cards[1].value
-    
-    if(cardOne === "QUEEN" || cardOne === "KING" || cardOne === "JACK"){
-      cardOne = '10'
-    } if(cardTwo === "QUEEN" || cardTwo === "KING" || cardTwo === "JACK"){
-      cardTwo = '10'
-    } if(cardOne === "ACE") {
-      cardOne = '1'
-    } if(cardTwo === "ACE") {
-      cardTwo = '1'
-    }
-    let total = Number(cardOne) + Number(cardTwo)
-    setPlayerScore(total)
-  }
+  // function for adding all the card values together and adding sending them to be displayed
+  // Changed the sting values of the face cards to numbers
+  const displayScore = (cards, set) => {
+    let array = []
+    let sum = 0;
+    cards.map( (value) => {
+      return(
+        array.push(value.value)
+      )
+    })
+    array.forEach( (i) => {
+      if(i === "QUEEN" || i === "KING" || i === "JACK"){
+        const remove = array.indexOf(i)
+        array[remove] = "10"
+      }if(i === "ACE"){
+        const remove = array.indexOf(i)
+        array[remove] = "1"
+      }
+    })
 
-  const scoreDealer = (cards) => {
-    let cardOne = cards[0].value
-    let cardTwo = cards[1].value
-    
-    if(cardOne === "QUEEN" || cardOne === "KING" || cardOne === "JACK"){
-      cardOne = '10'
-    } if(cardTwo === "QUEEN" || cardTwo === "KING" || cardTwo === "JACK"){
-      cardTwo = '10'
-    } if(cardOne === "ACE") {
-      cardOne = '1'
-    } if(cardTwo === "ACE") {
-      cardTwo = '1'
+    const numberArray = array.map((i) => Number(i));
+
+    for (let i = 0; i < numberArray.length; i++) {
+      sum += numberArray[i];
     }
-    let total = Number(cardOne) + Number(cardTwo)
-    setDealerScore(total)
+
+    set(sum)
   }
 
   return (
     <div>
-      <h1>Card Game App</h1>
+      <h1>♠️ ♥️ React Jack ♣️ ♦️</h1>
       <button onClick={() => startDraw()}>Start Game</button>
-      <button onClick={() => getScore(playerHand, dealerHand)}>Score</button>
 
-      <div className="dealer">
-        <div className="score">
-          <p>{dealerScore}</p>
-        </div>
-      {
-          dealerHand.map( (cards) => {
-            return (
-              <img key={cards.code} src={cards.image} alt={`${cards.value} of ${cards.suit}`}/>
-            )
-          })
-        }
+      {/* Dealer Score */}
+      <div className="score">
+        <p>Dealer: {dealerScore}</p>
       </div>
+
+      {/* Dealer hand */}
+      <Cards player={dealerHand} />
+
       <div className="deck">
       <h2>{cardCount}</h2>
       <button onClick={() => hit()}>Hit</button>
       </div>
 
-      <Cards player={playerHand} score={playerScore}/>
+      {/* Player Hand */}
+      <Cards player={playerHand} />
 
-      {/* <div className="player">
-        {
-          playerHand.map( (cards) => {
-            return (
-              <img key={cards.code} src={cards.image} alt={`${cards.value} of ${cards.suit}`}/>
-            )
-          })
-        }
-
-        <div className="score">
-          <p>{playerScore}</p>
-        </div>
-      </div> */}
-
+      {/* Player Score */}
+      <div className="score">
+        <p>Player: {playerScore}</p>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 const Cards = (props) => {
     return(
-        <div className="player">
+        <div className="hand">
             {
             props.player.map( (cards) => {
                 return (
@@ -8,10 +8,6 @@ const Cards = (props) => {
                 )
             })
             }
-
-            <div className="score">
-            <p>{props.score}</p>
-            </div>
         </div>
     )
 }
