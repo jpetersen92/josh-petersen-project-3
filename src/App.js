@@ -109,7 +109,7 @@ function App() {
   }
 
   return (
-    <div>
+    <div className={"table"}>
       <h1>♠️ ♥️ React Jack ♣️ ♦️</h1>
       <button onClick={() => startDraw()}>Start Game</button>
 
@@ -123,16 +123,20 @@ function App() {
 
       <div className="deck">
       <h2>{cardCount}</h2>
-      <button onClick={() => hit()}>Hit</button>
       </div>
 
       {/* Player Hand */}
       <Cards player={playerHand} />
+      
+      <div className="interface">
+      <button onClick={() => hit()}>Hit</button>
+      </div>
 
       {/* Player Score */}
       <div className="score">
         <p>Player: {playerScore}</p>
       </div>
+
     </div>
   );
 }
