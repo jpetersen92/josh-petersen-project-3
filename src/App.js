@@ -27,6 +27,10 @@ function App() {
 
   // Game Load - load new shuffled deck from api
   useEffect( () => {
+    gameLoad();
+  }, [])
+
+  const gameLoad = () => {
     axios({
       method: 'GET',
       url: `${baseUrl}new/shuffle`,
@@ -35,7 +39,7 @@ function App() {
       setDeckId(res.data.deck_id);
       setCardCount(res.data.remaining)
     })   
-  }, [])
+  }
 
   // Start game on button click
   // deals two cards to player and two cards to dealer
@@ -108,6 +112,28 @@ function App() {
     set(sum)
   }
 
+  const actionResult = (score, dScore) => {
+    if(score > 21 || dScore === 21) {
+      alert("You Lose 😔")
+      setPlayerScore(0)
+      setDealerScore(0)
+      setCardCount(0)
+      setPlayerHand([])
+      setDealerHand([])
+      gameLoad();
+    } if(score === 21 || dScore > 21) {
+      alert('You Win!')
+      setPlayerScore(0)
+      setDealerScore(0)
+      setCardCount(0)
+      setPlayerHand([])
+      setDealerHand([])
+      gameLoad();
+    }
+  }
+
+  actionResult(playerScore, dealerScore)
+
   return (
     <div className={"table"}>
       <h1>♠️ ♥️ React Jack ♣️ ♦️</h1>
@@ -130,6 +156,7 @@ function App() {
       
       <div className="interface">
       <button onClick={() => hit()}>Hit</button>
+      <button>Stay</button>
       </div>
 
       {/* Player Score */}
