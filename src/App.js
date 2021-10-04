@@ -14,6 +14,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import './App.css';
 import Cards from './Cards';
+// import Score from './Score';
 
 
 function App() {
@@ -60,7 +61,7 @@ function App() {
 
   // Get and display scores on screen
   useEffect( () => {
-    getScore(playerHand, setPlayerScore, dealerHand, setDealerScore)
+    getScore(playerHand, setPlayerScore, playerScore, dealerHand, setDealerScore, dealerScore)
   }, [playerHand, dealerHand])
   
   // Hit button adds one card to the screen and updates the score
@@ -78,14 +79,50 @@ function App() {
     })
   }
 
-  const getScore = (player, setPlayer, dealer, setDealer) => {
-    displayScore(player, setPlayer);
-    displayScore(dealer, setDealer)
+  const dealerDeal = () => {
+    axios({
+      method: 'GET',
+      url: `${baseUrl}${deckId}/draw/`,
+      dataResponse: 'json',
+      params: {
+        count: 1
+      }
+    }).then( (res) => {
+      setCardCount(res.data.remaining);
+      setDealerHand([...dealerHand, res.data.cards[0]])
+      finalScore();
+    })
   }
 
+
+  const stay = () => {
+    // if dealer score is >= 17 then dealer stands and score is added up.
+    // if dealer score is < 17 then dealer draws one card and continues to draw until score is >= to 17
+
+    if(dealerScore >= 17){
+      finalScore();
+    } if(dealerScore < 17){
+      dealerDeal()
+    }
+  }
+
+  const getScore = (player, setPlayer, pScore,  dealer, setDealer, dScore) => {
+    displayScore(player, setPlayer, pScore);
+    displayScore(dealer, setDealer, dScore)
+  }
+
+
+  const resetGame = () => {
+    setPlayerScore(0)
+    setDealerScore(0)
+    setCardCount(0)
+    setPlayerHand([])
+    setDealerHand([])
+    gameLoad();
+  }
   // function for adding all the card values together and adding sending them to be displayed
   // Changed the sting values of the face cards to numbers
-  const displayScore = (cards, set) => {
+  const displayScore = (cards, set, score) => {
     let array = []
     let sum = 0;
     cards.map( (value) => {
@@ -97,7 +134,14 @@ function App() {
       if(i === "QUEEN" || i === "KING" || i === "JACK"){
         const remove = array.indexOf(i)
         array[remove] = "10"
-      }if(i === "ACE"){
+      } if(i === "ACE" && score <= 10){
+        const remove = array.indexOf(i)
+        array[remove] = "11"
+        // if i = ace and score is < 21 then i = 1
+      } if(i === "ACE" && score > 10){
+        const remove = array.indexOf(i)
+        array[remove] = "1"
+      } if(i === 11 && score > 21){
         const remove = array.indexOf(i)
         array[remove] = "1"
       }
@@ -113,26 +157,31 @@ function App() {
   }
 
   const actionResult = (score, dScore) => {
-    if(score > 21 || dScore === 21) {
-      alert("You Lose 😔")
-      setPlayerScore(0)
-      setDealerScore(0)
-      setCardCount(0)
-      setPlayerHand([])
-      setDealerHand([])
-      gameLoad();
-    } if(score === 21 || dScore > 21) {
-      alert('You Win!')
-      setPlayerScore(0)
-      setDealerScore(0)
-      setCardCount(0)
-      setPlayerHand([])
-      setDealerHand([])
-      gameLoad();
+    if(score > 21) {
+      resetGame();
+      alert(`You Lose, your score of ${playerScore} is over 21`)
     }
   }
-
   actionResult(playerScore, dealerScore)
+
+  const finalScore = () => {
+    if(playerScore === 21) {
+      resetGame();
+      alert(`You Won! - You: ${playerScore} Dealer: ${dealerScore}`)
+    } if(dealerScore > 21){
+      resetGame();
+      alert(`You Won! - You: ${playerScore} Dealer: ${dealerScore}}`)
+    } if(playerScore > dealerScore){
+      resetGame();
+      alert(`You Won! - You: ${playerScore} Dealer: ${dealerScore}`)
+    } if(playerScore < dealerScore){
+      resetGame();
+      alert(`You Loose - You: ${playerScore} Dealer: ${dealerScore}`)
+    } if (playerScore === dealerScore){
+      resetGame();
+      alert(`It's a Draw - You: ${playerScore} Dealer: ${dealerScore}`)
+    }
+  }
 
   return (
     <div className={"table"}>
@@ -156,13 +205,17 @@ function App() {
       
       <div className="interface">
       <button onClick={() => hit()}>Hit</button>
-      <button>Stay</button>
+      <button onClick={() => stay()}>Stay</button>
       </div>
 
       {/* Player Score */}
       <div className="score">
         <p>Player: {playerScore}</p>
       </div>
+
+      <footer>
+        <p>Created at <a href="https://junocollege.com/">Juno College</a></p>
+      </footer>
 
     </div>
   );
