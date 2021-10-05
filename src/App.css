@@ -30,6 +30,13 @@ h1 {
     border-radius: 5px;
 }
 
+.game {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
 .deck {
     width: 150px;
     height: 208.4px;
@@ -40,9 +47,10 @@ h1 {
     background-position: center;
     display: flex;
     justify-content: center;
-    align-items: start;
+    align-items: flex-start;
     border-radius: 7px;
-    border: 1px solid #000;
+    border: 1x solid #000;
+    margin-right: 100px;
 }
 
 .deck h2 {
@@ -71,10 +79,12 @@ p {
 
 .hand {
     height: 208.4px;
+    margin: 25px 0 0;
 }
 
 img {
     width: 150px;
+    margin: 10px;
 }
 
 footer {
@@ -91,6 +101,7 @@ footer a {
 
 button {
     background-color: orange;
+    font-size: 5rem;
     color: #fff;
     border: 1px solid #000;
     padding: 10px;
@@ -120,4 +131,6 @@ button:hover {
 
 .interface button {
     width: 100px;
+    height: 40px;
+    font-size: 1rem;
 }

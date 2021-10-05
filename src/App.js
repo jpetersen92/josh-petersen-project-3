@@ -25,6 +25,8 @@ function App() {
   const [dealerHand, setDealerHand] = useState([])
   const [playerScore, setPlayerScore] = useState(0)
   const [dealerScore, setDealerScore] = useState(0)
+  const [startGame, setStartGame] = useState(true)
+  const [loadCards, setLoadCards] = useState(false)
 
   // Game Load - load new shuffled deck from api
   useEffect( () => {
@@ -39,6 +41,8 @@ function App() {
     }).then( (res) => {
       setDeckId(res.data.deck_id);
       setCardCount(res.data.remaining)
+      setStartGame(true)
+      setLoadCards(false)
     })   
   }
 
@@ -56,6 +60,8 @@ function App() {
       setCardCount(res.data.remaining);
       setPlayerHand([res.data.cards[0], res.data.cards[2]])
       setDealerHand([res.data.cards[1], res.data.cards[3]])
+      setStartGame(false)
+      setLoadCards(true)
     })
   }
 
@@ -90,7 +96,6 @@ function App() {
     }).then( (res) => {
       setCardCount(res.data.remaining);
       setDealerHand([...dealerHand, res.data.cards[0]])
-      finalScore();
     })
   }
 
@@ -101,8 +106,8 @@ function App() {
 
     if(dealerScore >= 17){
       finalScore();
-    } if(dealerScore < 17){
-      dealerDeal()
+    } else {
+      dealerDeal();
     }
   }
 
@@ -156,13 +161,13 @@ function App() {
     set(sum)
   }
 
-  const actionResult = (score, dScore) => {
+  const actionResult = (score) => {
     if(score > 21) {
       resetGame();
       alert(`You Lose, your score of ${playerScore} is over 21`)
     }
   }
-  actionResult(playerScore, dealerScore)
+  actionResult(playerScore)
 
   const finalScore = () => {
     if(playerScore === 21) {
@@ -186,32 +191,48 @@ function App() {
   return (
     <div className={"table"}>
       <h1>♠️ ♥️ React Jack ♣️ ♦️</h1>
-      <button onClick={() => startDraw()}>Start Game</button>
 
-      {/* Dealer Score */}
-      <div className="score">
-        <p>Dealer: {dealerScore}</p>
-      </div>
+      {
+        startGame === true 
+        ? <button onClick={() => startDraw()}>Start Game</button>
+        : <></>
+      }
 
-      {/* Dealer hand */}
-      <Cards player={dealerHand} />
 
-      <div className="deck">
-      <h2>{cardCount}</h2>
-      </div>
+      {
+        loadCards === true
+        ? <>
+            {/* Dealer Score */}
+            <div className="score">
+              <p>Dealer: {dealerScore}</p>
+            </div>
 
-      {/* Player Hand */}
-      <Cards player={playerHand} />
-      
-      <div className="interface">
-      <button onClick={() => hit()}>Hit</button>
-      <button onClick={() => stay()}>Stay</button>
-      </div>
+            <div className="game">
+            <div className="deck">
+            <h2>{cardCount}</h2>
+            </div>
+            <div className="playable">
+              {/* Dealer hand */}
+              <Cards player={dealerHand} />
 
-      {/* Player Score */}
-      <div className="score">
-        <p>Player: {playerScore}</p>
-      </div>
+              {/* Player Hand */}
+              <Cards player={playerHand} />
+            </div>
+            </div>
+            
+            <div className="interface">
+            <button onClick={() => hit()}>Hit</button>
+            <button onClick={() => stay()}>Stay</button>
+            </div>
+
+            {/* Player Score */}
+            <div className="score">
+              <p>Player: {playerScore}</p>
+            </div>
+          </>
+        
+        : <></>
+      }
 
       <footer>
         <p>Created at <a href="https://junocollege.com/">Juno College</a></p>
