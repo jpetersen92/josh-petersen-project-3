@@ -212,21 +212,20 @@ function App() {
             </div>
 
             <div className="game">
-            <div className="deck">
-            <h2>{cardCount}</h2>
+              <div className="deck">
+              <h2>  {cardCount}</h2>
+              </div>
+              <div className="playable">
+                  {/* Dealer hand */}
+                  <Cards player={dealerHand} />
+                   {/* Player Hand */}
+                  <Cards player={playerHand} />
+              </div>
             </div>
-            <div className="playable">
-              {/* Dealer hand */}
-              <Cards player={dealerHand} />
-
-              {/* Player Hand */}
-              <Cards player={playerHand} />
-            </div>
-            </div>
-            
-            <div className="interface">
-            <button onClick={() => hit()}>Hit</button>
-            <button onClick={() => stay()}>Stay</button>
+              
+              <div className="interface">
+              <button onClick={() => hit()}>Hit</button>
+              <button onClick={() => stay()}>Stay</button>
             </div>
 
             {/* Player Score */}

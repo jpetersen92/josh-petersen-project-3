@@ -8,6 +8,10 @@ html { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: 
 
 .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; border: 0; padding: 0; white-space: nowrap; clip-path: inset(100%); clip: rect(0 0 0 0); overflow: hidden;}
 
+/* Back ground Images */
+
+/*  */
+
 html {
     font-size: 125%;
 }
@@ -78,14 +82,16 @@ p {
 }
 
 .hand {
-    height: 208.4px;
     margin: 25px 0 0;
+    display: flex;
+    justify-content: center;
 }
 
 img {
     width: 150px;
     margin: 10px;
 }
+
 
 footer {
     color: #fff;
@@ -135,4 +141,36 @@ button:hover {
     height: 40px;
     font-size: 1rem;
     border-radius: 5px;
+}
+
+@media(max-width: 925px) {
+    img {
+        width: 100px;
+    }
+    .deck{
+        width: 100px;
+        height: 148.93px;
+    }
+}
+
+@media(max-width: 734px) {
+    button {
+        font-size: 2rem;
+    }
+
+
+    .deck {
+        margin-right: 30px;
+        margin-left: 10px;
+    }
+
+    .interface {
+        flex-direction: column;
+        align-self: start;
+        margin-left: 10px;
+    }
+    
+    .interface button:last-of-type {
+        margin-top: 30px;
+    }
 }
