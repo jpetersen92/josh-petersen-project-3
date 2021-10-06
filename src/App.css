@@ -23,9 +23,10 @@ html {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    background-image: url(https://images.unsplash.com/photo-1582055193464-943584223be1?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80);
+    background-color: rgb(27, 92, 27);
+    /* background-image: url(https://images.unsplash.com/photo-1582055193464-943584223be1?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80);
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: cover; */
     margin: 0;
 }
 
@@ -111,7 +112,7 @@ button {
     font-size: 5rem;
     color: #fff;
     border: 1px solid #000;
-    padding: 10px;
+    padding: 15px 10px 10px;
     border-radius: 20px;
     box-shadow: 5px 5px 5px #000;
     transition: 0.3s;
