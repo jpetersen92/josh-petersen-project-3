@@ -14,7 +14,8 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import './App.css';
 import Cards from './Cards';
-// import Score from './Score';
+import Hit from './Hit';
+import StartGame from './StartGame';
 
 
 function App() {
@@ -48,51 +49,17 @@ function App() {
       setLoadCards(false)
     })   
   }
-
-  // Start game on button click
-  // deals two cards to player and two cards to dealer
-  const startDraw = () => {
-    axios({
-      method: 'GET',
-      url: `${baseUrl}${deckId}/draw/`,
-      dataResponse: 'json',
-      params: {
-        count: 4
-      }
-    }).then( (res) => {
-      setCardCount(res.data.remaining);
-      setPlayerHand([res.data.cards[0], res.data.cards[2]])
-      setDealerHand([res.data.cards[1], res.data.cards[3]])
-      setStartGame(false)
-      setLoadCards(true)
-    })
-  }
-
+  
   // Get and display scores on screen
   useEffect( () => {
     displayScore(playerHand, setPlayerScore)
     displayScore(dealerHand, setDealerScore)
   }, [playerHand, dealerHand])
-  
-  // Hit button adds one card to the screen and updates the score
-  const hit = () => {
-    axios({
-      method: 'GET',
-      url: `${baseUrl}${deckId}/draw/`,
-      dataResponse: 'json',
-      params: {
-        count: 1
-      }
-    }).then( (res) => {
-      setCardCount(res.data.remaining);
-      setPlayerHand([...playerHand, res.data.cards[0]])
-    })
-  }
 
   useEffect(()=>{
     if(clickedStay === true){
       if(dealerScore >= 17){
-        finalScore();
+        finalScore(playerScore, dealerScore);
       } else {
         dealerDeal();
       }
@@ -122,7 +89,7 @@ function App() {
     setClickedStay(true)
 
     if(dealerScore >= 17){
-      finalScore();
+      finalScore(playerScore, dealerScore);
     } else {
       dealerDeal();
     }
@@ -168,27 +135,27 @@ function App() {
   const actionResult = (score) => {
     if(score > 21) {
       resetGame();
-      alert(`You Lose, your score of ${playerScore} is over 21`)
+      alert(`You Lose, your score of ${score} is over 21`)
     }
   }
   actionResult(playerScore)
 
-  const finalScore = () => {
-    if(playerScore === 21) {
+  const finalScore = (pScore, dScore) => {
+    if(pScore === 21) {
       resetGame();
-      alert(`You Won! - You: ${playerScore} Dealer: ${dealerScore}`)
+      alert(`You Won! - You: ${pScore} Dealer: ${dScore}`)
     } if(dealerScore > 21){
       resetGame();
-      alert(`You Won! - You: ${playerScore} Dealer: ${dealerScore}`)
-    } if(playerScore > dealerScore){
+      alert(`You Won! - You: ${pScore} Dealer: ${dScore}`)
+    } if(pScore > dScore){
       resetGame();
-      alert(`You Won! - You: ${playerScore} Dealer: ${dealerScore}`)
-    } if(playerScore < dealerScore){
+      alert(`You Won! - You: ${pScore} Dealer: ${dScore}`)
+    } if(pScore < dScore){
       resetGame();
-      alert(`You Loose - You: ${playerScore} Dealer: ${dealerScore}`)
-    } if (playerScore === dealerScore){
+      alert(`You Loose - You: ${pScore} Dealer: ${dScore}`)
+    } if (pScore === dScore){
       resetGame();
-      alert(`It's a Draw - You: ${playerScore} Dealer: ${dealerScore}`)
+      alert(`It's a Draw - You: ${pScore} Dealer: ${dScore}`)
     }
   }
 
@@ -198,7 +165,15 @@ function App() {
 
       {
         startGame === true 
-        ? <button onClick={() => startDraw()}>Start Game</button>
+        ? <StartGame 
+          url={baseUrl}
+          id={deckId}
+          setCard={setCardCount}
+          setPHand={setPlayerHand}
+          setDHand={setDealerHand}
+          setStart={setStartGame}
+          setLoad={setLoadCards}
+        />
         : <></>
       }
 
@@ -224,7 +199,13 @@ function App() {
             </div>
               
               <div className="interface">
-              <button onClick={() => hit()}>Hit</button>
+                <Hit 
+                  url={baseUrl}
+                  id={deckId}
+                  setCard={setCardCount}
+                  setPHand={setPlayerHand}
+                  hand={playerHand}
+                />
               <button onClick={() => stay()}>Stay</button>
             </div>
 
