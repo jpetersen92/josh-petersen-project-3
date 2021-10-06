@@ -29,6 +29,7 @@ function App() {
   const [dealerScore, setDealerScore] = useState(0)
   const [startGame, setStartGame] = useState(true)
   const [loadCards, setLoadCards] = useState(false)
+  const [clickedStay, setClickedStay] = useState(false)
 
   // Game Load - load new shuffled deck from api
   useEffect( () => {
@@ -69,8 +70,6 @@ function App() {
 
   // Get and display scores on screen
   useEffect( () => {
-    // getScore(playerHand, playerScore, dealerHand, dealerScore)
-    
     displayScore(playerHand, setPlayerScore)
     displayScore(dealerHand, setDealerScore)
   }, [playerHand, dealerHand])
@@ -90,6 +89,16 @@ function App() {
     })
   }
 
+  useEffect(()=>{
+    if(clickedStay === true){
+      if(dealerScore >= 17){
+        finalScore();
+      } else {
+        dealerDeal();
+      }
+    }
+  }, )
+
   const dealerDeal = () => {
     axios({
       method: 'GET',
@@ -101,14 +110,16 @@ function App() {
     }).then( (res) => {
       setCardCount(res.data.remaining);
       setDealerHand([...dealerHand, res.data.cards[0]])
-      // setTimeout(function(){ console.log(dealerScore); }, 3000);
     })
+
   }
 
 
   const stay = () => {
     // if dealer score is >= 17 then dealer stands and score is added up.
     // if dealer score is < 17 then dealer draws one card and continues to draw until score is >= to 17
+
+    setClickedStay(true)
 
     if(dealerScore >= 17){
       finalScore();
@@ -117,18 +128,13 @@ function App() {
     }
   }
 
-  // const getScore = (player, pScore,  dealer, dScore) => {
-  //   displayScore(player, pScore);
-  //   displayScore(dealer, dScore)
-  // }
-
-
   const resetGame = () => {
     setPlayerScore(0)
     setDealerScore(0)
     setCardCount(0)
     setPlayerHand([])
     setDealerHand([])
+    setClickedStay(false)
     gameLoad();
   }
   // function for adding all the card values together and adding sending them to be displayed
