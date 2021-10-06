@@ -23,10 +23,8 @@ html {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    background-color: rgb(27, 92, 27);
-    /* background-image: url(https://images.unsplash.com/photo-1582055193464-943584223be1?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80);
-    background-repeat: no-repeat;
-    background-size: cover; */
+    background: rgb(45,60,45);
+    background: linear-gradient(133deg, rgba(45,60,45,1) 0%, rgba(36,84,36,1) 13%, rgba(37,98,37,1) 61%, rgba(27,92,27,1) 88%, rgba(34,77,34,1) 100%); 
     margin: 0;
 }
 
