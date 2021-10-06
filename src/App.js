@@ -18,6 +18,8 @@ import Cards from './Cards';
 
 
 function App() {
+
+  // USESTATES
   const baseUrl = 'https://deckofcardsapi.com/api/deck/'
   const [deckId, setDeckId] = useState('')
   const [cardCount, setCardCount] = useState(0)
@@ -67,7 +69,10 @@ function App() {
 
   // Get and display scores on screen
   useEffect( () => {
-    getScore(playerHand, setPlayerScore, playerScore, dealerHand, setDealerScore, dealerScore)
+    // getScore(playerHand, playerScore, dealerHand, dealerScore)
+    
+    displayScore(playerHand, setPlayerScore)
+    displayScore(dealerHand, setDealerScore)
   }, [playerHand, dealerHand])
   
   // Hit button adds one card to the screen and updates the score
@@ -96,6 +101,7 @@ function App() {
     }).then( (res) => {
       setCardCount(res.data.remaining);
       setDealerHand([...dealerHand, res.data.cards[0]])
+      // setTimeout(function(){ console.log(dealerScore); }, 3000);
     })
   }
 
@@ -111,10 +117,10 @@ function App() {
     }
   }
 
-  const getScore = (player, setPlayer, pScore,  dealer, setDealer, dScore) => {
-    displayScore(player, setPlayer, pScore);
-    displayScore(dealer, setDealer, dScore)
-  }
+  // const getScore = (player, pScore,  dealer, dScore) => {
+  //   displayScore(player, pScore);
+  //   displayScore(dealer, dScore)
+  // }
 
 
   const resetGame = () => {
@@ -127,7 +133,7 @@ function App() {
   }
   // function for adding all the card values together and adding sending them to be displayed
   // Changed the sting values of the face cards to numbers
-  const displayScore = (cards, set, score) => {
+  const displayScore = (cards, set) => {
     let array = []
     let sum = 0;
     cards.map( (value) => {
@@ -139,17 +145,10 @@ function App() {
       if(i === "QUEEN" || i === "KING" || i === "JACK"){
         const remove = array.indexOf(i)
         array[remove] = "10"
-      } if(i === "ACE" && score <= 10){
+      } else if(i === "ACE"){
         const remove = array.indexOf(i)
         array[remove] = "11"
-        // if i = ace and score is < 21 then i = 1
-      } if(i === "ACE" && score > 10){
-        const remove = array.indexOf(i)
-        array[remove] = "1"
-      } if(i === 11 && score > 21){
-        const remove = array.indexOf(i)
-        array[remove] = "1"
-      }
+      } 
     })
 
     const numberArray = array.map((i) => Number(i));
@@ -157,7 +156,6 @@ function App() {
     for (let i = 0; i < numberArray.length; i++) {
       sum += numberArray[i];
     }
-
     set(sum)
   }
 
@@ -175,7 +173,7 @@ function App() {
       alert(`You Won! - You: ${playerScore} Dealer: ${dealerScore}`)
     } if(dealerScore > 21){
       resetGame();
-      alert(`You Won! - You: ${playerScore} Dealer: ${dealerScore}}`)
+      alert(`You Won! - You: ${playerScore} Dealer: ${dealerScore}`)
     } if(playerScore > dealerScore){
       resetGame();
       alert(`You Won! - You: ${playerScore} Dealer: ${dealerScore}`)
