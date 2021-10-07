@@ -16,6 +16,9 @@ import './App.css';
 import Cards from './Cards';
 import Hit from './Hit';
 import StartGame from './StartGame';
+import gameLoad from './gameLoad';
+import displayScore from './displayScore';
+
 
 
 function App() {
@@ -34,22 +37,8 @@ function App() {
 
   // Game Load - load new shuffled deck from api
   useEffect( () => {
-    gameLoad();
+    gameLoad(baseUrl, setDeckId, setCardCount, setStartGame, setLoadCards);
   }, [])
-
-  // Function to load game with Deck of Card API call
-  const gameLoad = () => {
-    axios({
-      method: 'GET',
-      url: `${baseUrl}new/shuffle`,
-      dataResponse: 'json'
-    }).then( (res) => {
-      setDeckId(res.data.deck_id);
-      setCardCount(res.data.remaining)
-      setStartGame(true)
-      setLoadCards(false)
-    })   
-  }
 
   // Get and display scores on screen
   useEffect( () => {
@@ -106,35 +95,9 @@ function App() {
     setPlayerHand([])
     setDealerHand([])
     setClickedStay(false)
-    gameLoad();
+    gameLoad(baseUrl,setDeckId,setCardCount, setStartGame, setLoadCards);
   }
-  // function for adding all the card values together and adding sending them to be displayed
-  // Changed the sting values of the face cards to numbers
-  const displayScore = (cards, set) => {
-    let array = []
-    let sum = 0;
-    cards.map( (value) => {
-      return(
-        array.push(value.value)
-      )
-    })
-    array.forEach( (i) => {
-      if(i === "QUEEN" || i === "KING" || i === "JACK"){
-        const remove = array.indexOf(i)
-        array[remove] = "10"
-      } else if(i === "ACE"){
-        const remove = array.indexOf(i)
-        array[remove] = "11"
-      } 
-    })
-
-    const numberArray = array.map((i) => Number(i));
-
-    for (let i = 0; i < numberArray.length; i++) {
-      sum += numberArray[i];
-    }
-    set(sum)
-  }
+  
   // Check if player score reaches over 21
   const actionResult = (score) => {
     if(score > 21) {
