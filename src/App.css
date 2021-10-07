@@ -176,3 +176,31 @@ button:focus {
         margin-top: 30px;
     }
 }
+
+@media(max-width: 450px) {
+
+    h1 {
+        font-size: 1rem;
+    }
+
+    .game {
+        flex-direction: column;
+    }
+
+    .deck {
+        background-image: none;
+        background-color: rgba(253, 245, 245, 0.8);
+        height: 50px;
+        margin: 0;
+    }
+    
+    .deck h2 {
+        color: #000;
+        margin-top: 8px;
+    }
+
+    footer {
+        height: 15px;
+        font-size: 0.5rem;
+    }
+}
