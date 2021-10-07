@@ -110,11 +110,12 @@ button {
     font-size: 5rem;
     color: #fff;
     border: 1px solid #000;
-    padding: 15px 10px 10px;
+    padding: 10px;
     border-radius: 20px;
     box-shadow: 5px 5px 5px #000;
     transition: 0.3s;
     font-weight: bold;
+    cursor: pointer;
 }
 
 @keyframes button{
