@@ -37,6 +37,7 @@ function App() {
     gameLoad();
   }, [])
 
+  // Function to load game with Deck of Card API call
   const gameLoad = () => {
     axios({
       method: 'GET',
@@ -49,13 +50,14 @@ function App() {
       setLoadCards(false)
     })   
   }
-  
+
   // Get and display scores on screen
   useEffect( () => {
     displayScore(playerHand, setPlayerScore)
     displayScore(dealerHand, setDealerScore)
   }, [playerHand, dealerHand])
 
+  // useEffect to check if dealerScore is within paramaters to continue to final score
   useEffect(()=>{
     if(clickedStay === true){
       if(dealerScore >= 17){
@@ -66,6 +68,7 @@ function App() {
     }
   }, )
 
+// function to deal cards to dealer
   const dealerDeal = () => {
     axios({
       method: 'GET',
@@ -81,7 +84,8 @@ function App() {
 
   }
 
-
+  // function for when players hit the stay button
+    // will propmt to check dealer score and if over 17 will start the finalScore function
   const stay = () => {
     // if dealer score is >= 17 then dealer stands and score is added up.
     // if dealer score is < 17 then dealer draws one card and continues to draw until score is >= to 17
@@ -131,7 +135,7 @@ function App() {
     }
     set(sum)
   }
-
+  // Check if player score reaches over 21
   const actionResult = (score) => {
     if(score > 21) {
       resetGame();
@@ -139,7 +143,7 @@ function App() {
     }
   }
   actionResult(playerScore)
-
+  // Once the player has stayed and the dealer has finished their turn the score is calculated and a winner is decided.
   const finalScore = (pScore, dScore) => {
     if(pScore === 21) {
       resetGame();

@@ -1,3 +1,5 @@
+// displays ether player cards or dealer cards onto the page.
+
 const Cards = (props) => {
     return(
         <div className="hand">
