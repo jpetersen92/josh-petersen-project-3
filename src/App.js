@@ -35,6 +35,8 @@ function App() {
   const [startGame, setStartGame] = useState(true)
   const [loadCards, setLoadCards] = useState(false)
   const [clickedStay, setClickedStay] = useState(false)
+  const [playerMoney, setPlayerMoney] = useState(100)
+  const [bet, setBet] = useState(0)
 
   // Game Load - load new shuffled deck from api
   useEffect( () => {
@@ -130,12 +132,18 @@ function App() {
   return (
     <div className={"table"}>
       <h1>♠️ ♥️ React Jack ♣️ ♦️</h1>
+      <Betting
+      cash={playerMoney}
+      setCash={setPlayerMoney}
+      start={startGame}
+      bet={bet}
+      setBet={setBet}
+      />
 
       {
         startGame === true 
         ?
         <> 
-        <Betting/>
         <StartGame 
           url={baseUrl}
           id={deckId}
