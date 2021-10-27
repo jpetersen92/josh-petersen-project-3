@@ -18,6 +18,7 @@ import Hit from './Hit';
 import StartGame from './StartGame';
 import gameLoad from './gameLoad';
 import displayScore from './displayScore';
+import Betting from './Betting';
 
 
 
@@ -132,7 +133,10 @@ function App() {
 
       {
         startGame === true 
-        ? <StartGame 
+        ?
+        <> 
+        <Betting/>
+        <StartGame 
           url={baseUrl}
           id={deckId}
           setCard={setCardCount}
@@ -141,7 +145,8 @@ function App() {
           setStart={setStartGame}
           setLoad={setLoadCards}
         />
-        : <></>
+        </>
+        : null
       }
 
 
