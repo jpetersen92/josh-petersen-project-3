@@ -98,6 +98,7 @@ function App() {
     setPlayerHand([])
     setDealerHand([])
     setClickedStay(false)
+    setBet(0)
     gameLoad(baseUrl,setDeckId,setCardCount, setStartGame, setLoadCards);
   }
   
