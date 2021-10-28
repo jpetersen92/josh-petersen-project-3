@@ -101,32 +101,46 @@ function App() {
     setBet(0)
     gameLoad(baseUrl,setDeckId,setCardCount, setStartGame, setLoadCards);
   }
+
+  const wonGame = (pScore, dScore) => {
+    alert(`You Won! - You: ${pScore} Dealer: ${dScore}`)
+    setPlayerMoney((bet * 2) + playerMoney)
+  }
+
+  const lostGame = (pScore, dScore) => {
+    alert(`You Loose - You: ${pScore} Dealer: ${dScore}`)
+  }
+
+  const drawGame = (pScore, dScore) =>{
+    alert(`It's a Draw - You: ${pScore} Dealer: ${dScore}`)
+    setPlayerMoney(playerMoney + bet)
+  }
   
   // Check if player score reaches over 21
   const actionResult = (score) => {
     if(score > 21) {
-      resetGame();
       alert(`You Lose, your score of ${score} is over 21`)
+      resetGame();
     }
   }
   actionResult(playerScore)
   // Once the player has stayed and the dealer has finished their turn the score is calculated and a winner is decided.
   const finalScore = (pScore, dScore) => {
     if(pScore === 21) {
+      wonGame(pScore, dScore)
       resetGame();
-      alert(`You Won! - You: ${pScore} Dealer: ${dScore}`)
-    } if(dealerScore > 21){
+    }else if(dealerScore > 21){
+      wonGame(pScore, dScore)
       resetGame();
-      alert(`You Won! - You: ${pScore} Dealer: ${dScore}`)
-    } if(pScore > dScore){
+    }else if(pScore > dScore){
+      wonGame(pScore, dScore)
       resetGame();
-      alert(`You Won! - You: ${pScore} Dealer: ${dScore}`)
-    } if(pScore < dScore){
+    }else if(pScore < dScore){
+      lostGame(pScore, dScore)
       resetGame();
-      alert(`You Loose - You: ${pScore} Dealer: ${dScore}`)
-    } if (pScore === dScore){
+    }else if (pScore === dScore){
+      drawGame(pScore, dScore)
       resetGame();
-      alert(`It's a Draw - You: ${pScore} Dealer: ${dScore}`)
     }
   }
 
