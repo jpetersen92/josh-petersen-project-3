@@ -19,6 +19,8 @@ import StartGame from './StartGame';
 import gameLoad from './gameLoad';
 import displayScore from './displayScore';
 import Betting from './Betting';
+import Win from './Win';
+import Loss from './Loss';
 
 
 
@@ -37,6 +39,8 @@ function App() {
   const [clickedStay, setClickedStay] = useState(false)
   const [playerMoney, setPlayerMoney] = useState(100)
   const [bet, setBet] = useState(0)
+  const [loss, setLoss] = useState(false)
+  const [win, setWin] = useState(false)
 
   // Game Load - load new shuffled deck from api
   useEffect( () => {
@@ -54,8 +58,11 @@ function App() {
     if(clickedStay === true){
       if(dealerScore >= 17){
         finalScore(playerScore, dealerScore);
+        setClickedStay(false)
       } else {
-        dealerDeal();
+        setTimeout(() => {
+              dealerDeal();
+            }, 1000)
       }
     }
   }, )
@@ -82,13 +89,12 @@ function App() {
     // if dealer score is >= 17 then dealer stands and score is added up.
     // if dealer score is < 17 then dealer draws one card and continues to draw until score is >= to 17
 
-    setClickedStay(true)
-
     if(dealerScore >= 17){
       finalScore(playerScore, dealerScore);
     } else {
-      dealerDeal();
+      setClickedStay(true)
     }
+
   }
 
   const resetGame = () => {
@@ -97,18 +103,10 @@ function App() {
     setCardCount(0)
     setPlayerHand([])
     setDealerHand([])
-    setClickedStay(false)
     setBet(0)
+    setWin(false)
+    setLoss(false)
     gameLoad(baseUrl,setDeckId,setCardCount, setStartGame, setLoadCards);
-  }
-
-  const wonGame = (pScore, dScore) => {
-    alert(`You Won! - You: ${pScore} Dealer: ${dScore}`)
-    setPlayerMoney((bet * 2) + playerMoney)
-  }
-
-  const lostGame = (pScore, dScore) => {
-    alert(`You Loose - You: ${pScore} Dealer: ${dScore}`)
   }
 
   const drawGame = (pScore, dScore) =>{
@@ -126,22 +124,19 @@ function App() {
   actionResult(playerScore)
   // Once the player has stayed and the dealer has finished their turn the score is calculated and a winner is decided.
   const finalScore = (pScore, dScore) => {
-    if(pScore === 21) {
-      wonGame(pScore, dScore)
-      resetGame();
-    }else if(dealerScore > 21){
-      wonGame(pScore, dScore)
-      resetGame();
-    }else if(pScore > dScore){
-      wonGame(pScore, dScore)
-      resetGame();
-    }else if(pScore < dScore){
-      lostGame(pScore, dScore)
-      resetGame();
-    }else if (pScore === dScore){
-      drawGame(pScore, dScore)
-      resetGame();
-    }
+    setTimeout(() => {
+      if(pScore === 21) {
+        setWin(true)
+      }else if(dealerScore > 21){
+        setWin(true)
+      }else if(pScore > dScore){
+        setWin(true)
+      }else if(pScore < dScore){
+        setLoss(true)
+      }else if (pScore === dScore){
+        drawGame(pScore, dScore)
+      }
+    }, 3000)
   }
 
   return (
@@ -156,6 +151,13 @@ function App() {
       />
 
       {
+        win === true
+        ? <Win pScore={playerScore} dScore={dealerScore} pCash={playerMoney} setPCash={setPlayerMoney} bet={bet} reset={resetGame}/>
+        : loss === true
+        ? <Loss pScore={playerScore} dScore={dealerScore} reset={resetGame}/>
+        :
+        <>
+          {
         startGame === true 
         ?
         <> 
@@ -212,6 +214,8 @@ function App() {
           </>
         
         : <></>
+      }
+        </>
       }
 
       <footer>
