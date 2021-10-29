@@ -20,8 +20,8 @@ const Betting = (props) => {
 
     return(
         <div className="userBettingInterface">
-            <h3>Player's Money : ${props.cash}</h3>
-            <h4>Bet Amount: ${props.bet}</h4>
+            <h3 className="cash">Player's Money : ${props.cash}</h3>
+            <h4 className="pot">Bet Amount: ${props.bet}</h4>
             { props.start === true                ?
             <div className="buttonContainer">
                 <button onClick={() => add()} >+</button>

@@ -61,14 +61,27 @@ h1 {
     color: #fff;
 }
 
-.score {
+.score, .pot, .cash {
     background-color: rgba(253, 245, 245, 0.8);
     padding: 5px;
     margin: 0 10px;
     border-radius: 5px;
 }
 
-.score:first-of-type{
+.pot, .cash {
+    position: absolute;
+    top: 45px;
+}
+
+.pot {
+    right: 0;
+}
+
+.cash {
+    left: 0;
+}
+
+.score:nth-last-of-type(4){
     align-self: end;
     text-align: end;
 }
@@ -143,6 +156,18 @@ button:focus {
     height: 40px;
     font-size: 1rem;
     border-radius: 5px;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.buttonContainer button {
+    font-size: 1.2rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
 }
 
 @media(max-width: 925px) {
