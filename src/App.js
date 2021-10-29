@@ -167,6 +167,7 @@ function App() {
           setDHand={setDealerHand}
           setStart={setStartGame}
           setLoad={setLoadCards}
+          bet={bet}
         />
         </>
         : null

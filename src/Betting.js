@@ -22,11 +22,15 @@ const Betting = (props) => {
         <div className="userBettingInterface">
             <h3 className="cash">Player's Money : ${props.cash}</h3>
             <h4 className="pot">Bet Amount: ${props.bet}</h4>
-            { props.start === true                ?
+            { props.start === true                
+            ?
+            <>
+            <p className="placeBet">Please Place Your Bet</p>
             <div className="buttonContainer">
-                <button onClick={() => add()} >+</button>
-                <button onClick={() => minus()}>-</button>
+                <button onClick={() => add()} >+ $10</button>
+                <button onClick={() => minus()}>- $10</button>
             </div>
+            </>
                 : null
             }
         </div>
