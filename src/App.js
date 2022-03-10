@@ -12,6 +12,8 @@
 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+
+
 import './App.css';
 import Cards from './Cards';
 import Hit from './Hit';
@@ -28,6 +30,7 @@ function App() {
 
   // USESTATES
   const baseUrl = 'https://deckofcardsapi.com/api/deck/'
+
   const [deckId, setDeckId] = useState('')
   const [cardCount, setCardCount] = useState(0)
   const [playerHand, setPlayerHand] = useState([])
